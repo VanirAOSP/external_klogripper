@@ -3,7 +3,7 @@
  * Licensed under GPL v2 or later
  */
 
-#define PACKAGE_VERSION  "2010.12.15"
+#define PACKAGE_VERSION  "2010.12.15.1"
 
 #include <sys/klog.h>  /* for klogctl() */
 #include <stdlib.h>  /* for NULL */
@@ -47,7 +47,7 @@ int overlap_len(const char * former, const char * latter, size_t former_len, siz
 
 void usage() {
 	fprintf(stdout, "USAGE:\n"
-		"  klogripper\n"
+		"  klogripper [--skip-first]\n"
 		"  klogripper --help\n"
 		"  klogripper --version\n"
 	);
@@ -64,6 +64,7 @@ int main(int argc, char ** argv) {
 	char * print_start = NULL;
 
 	unsigned int seconds_to_sleep = 0;
+	int skip = 0;
 
 	if (argc > 2) {
 		usage();
@@ -75,6 +76,8 @@ int main(int argc, char ** argv) {
 		} else if (! strcmp(argv[1], "--help")) {
 			usage();
 			return 0;
+		} else if (! strcmp(argv[1], "--skip-first")) {
+			skip = 1;
 		} else {
 			usage();
 			return 1;
@@ -113,7 +116,11 @@ int main(int argc, char ** argv) {
 		}
 
 		/* Print whatever is new to us */
-		fprintf(stdout, "%s", print_start);
+		if (skip) {
+			skip = 0;
+		} else {
+			fprintf(stdout, "%s", print_start);
+		}
 
 		free(prev_buffer);
 		prev_buffer = buffer;
