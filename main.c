@@ -8,6 +8,7 @@
 #include <sys/klog.h>  /* for klogctl() */
 #include <stdlib.h>  /* for NULL */
 #include <stdio.h>  /* for fprintf() */
+#include <string.h>
 #include <assert.h>  /* for assert() */
 #include <unistd.h>  /* sleep() */
 
